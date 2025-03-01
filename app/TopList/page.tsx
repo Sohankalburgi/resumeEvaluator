@@ -72,6 +72,7 @@ const Page = () => {
 
     const data: MatchesResponse = await res.json();
     setResults(data.matches);
+    console.log(data);
     setLoading(false);
   };
 
