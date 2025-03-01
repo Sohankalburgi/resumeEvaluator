@@ -138,7 +138,7 @@ const Page = () => {
                     </a>
 
                     <ScoreIndicator
-                      value={Math.round(result.metadata?.score * 100)}
+                      value={Math.round(parseInt(result.metadata?.score.toString()))}
                       maxValue={100}
                     />
                   </CardContent>
