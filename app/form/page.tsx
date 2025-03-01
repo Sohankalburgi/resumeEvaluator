@@ -40,6 +40,7 @@ export default function Home() {
             const response = await fetch("/api/resumeSubmit", {
                 method: 'POST',
                 body: formData,
+                
             });
 
             const responseResult = await response.json();
