@@ -15,7 +15,7 @@ interface Match {
     linkedin: string;
     name: string;
     skills: string;
-    score : number;
+    score : string;
   };
 }
 
@@ -138,7 +138,7 @@ const Page = () => {
                     </a>
 
                     <ScoreIndicator
-                      value={Math.round(parseInt(result.metadata?.score.toString()))}
+                      value={Math.round(parseInt(result.metadata?.score))}
                       maxValue={100}
                     />
                   </CardContent>
