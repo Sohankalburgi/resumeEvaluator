@@ -51,7 +51,7 @@ export default function Home() {
             if(responseResult.success) {
                 toast.success('Resume submitted successfully');
                 console.log(responseResult.resumeText);
-                await setCookie('email', responseResult.email);
+                document.cookie = `email=${responseResult.email}; path=/; max-age=86400; SameSite=Strict`;
                 router.push('/evaluation');
             } else {
                 toast.error(responseResult.message);
