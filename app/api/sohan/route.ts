@@ -60,8 +60,9 @@ export async function POST(request: Request) {
 	if (!(resume instanceof Blob)) {
 		return NextResponse.json({ success: false, error: "Invalid file format" }, { status: 400 });
 	}
-	const tempDir = path.join(process.cwd(), "tmp"); // Ensures an absolute path
-	const tempFilePath = path.join(tempDir, `${fileName}.pdf`);
+	const tempDir = "/tmp"; // Use /tmp in serverless environments
+const tempFilePath = path.join(tempDir, `${fileName}.pdf`);
+	
 	
 	const fileBuffer = Buffer.from(await resume.arrayBuffer());
 	await fs.writeFile(tempFilePath, fileBuffer);
