@@ -48,8 +48,9 @@ export default function Dashboard( ) {
 	const [result, setResult] = useState<Result | null>(null);
 	const router = useRouter();
 	const params = useParams();
-	const email = params.slug;
-	console.log(email);
+	const email = params.slug as string;
+	const decodedEmail = decodeURIComponent(email || '');
+	console.log(decodedEmail);
 	const [loading, setLoading] = useState<boolean>(false);
 	useEffect(() => {
 		async function fetchResult() {
@@ -61,7 +62,7 @@ export default function Dashboard( ) {
 			console.log("dfkk",email)
 			const response = await fetch('/api/evaluation', {
 				method:"POST",
-				body: JSON.stringify({ email }),
+				body: JSON.stringify({ email:decodedEmail }),
 				headers: { 'Content-Type': 'application/json' },
 				
 			});
