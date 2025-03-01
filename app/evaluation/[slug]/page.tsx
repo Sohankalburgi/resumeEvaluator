@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Evaluation = {
-	score: number;
+	score: string;
 	feedback: string;
 };
 type Experience = {
@@ -90,7 +90,7 @@ export default function Dashboard( ) {
 								<h2 className="text-xl font-bold">Score</h2>
 							</CardHeader>
 							<CardContent>
-								<ScoreIndicator value={result?.evaluation.score || 0} maxValue={100} />
+								<ScoreIndicator value={parseInt(result?.evaluation.score ?? '0')} maxValue={100} />
 							</CardContent>
 						</Card>
 
