@@ -21,6 +21,7 @@ type Experience = {
 
 interface Result {
 	id: string;
+	score : number;
 	email: string;
 	name: string;
 	linkedIn: string;
@@ -90,7 +91,7 @@ export default function Dashboard( ) {
 								<h2 className="text-xl font-bold">Score</h2>
 							</CardHeader>
 							<CardContent>
-								<ScoreIndicator value={parseInt(result?.evaluation.score ?? '0')} maxValue={100} />
+								<ScoreIndicator value={Math.round(result?.score ?? 0) * 100} maxValue={100} />
 							</CardContent>
 						</Card>
 
