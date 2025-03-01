@@ -37,6 +37,8 @@ export default function Home() {
             formData.append('resume', data.resume[0]);
             formData.append('skills', data.skills);
             formData.append('jobDescription', 'Software Engineer');
+
+            
             const response = await fetch("/api/resumeSubmit", {
                 method: 'POST',
                 body: formData,
@@ -49,7 +51,7 @@ export default function Home() {
             if(responseResult.success) {
                 toast.success('Resume submitted successfully');
                 console.log(responseResult.resumeText);
-                setCookie('email', responseResult.email);
+                await setCookie('email', responseResult.email);
                 // router.push('/evaluation');
             } else {
                 toast.error(responseResult.message);
