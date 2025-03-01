@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 // import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+import axios from 'axios';
 import { setCookie } from 'cookies-next';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
@@ -38,12 +39,11 @@ export default function Home() {
             formData.append('skills', data.skills);
             formData.append('jobDescription', 'Software Engineer');
 
-            
-            const response = await fetch("/api/resumeSubmit", {
-                method: 'POST',
-                body: formData,
-                
-            });
+
+            const response = await axios.post('/api/sohan', formData, 
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+
+            )
 
             const responseResult = await response.json();
             console.log(responseResult);
