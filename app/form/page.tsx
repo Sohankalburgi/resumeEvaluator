@@ -37,7 +37,7 @@ export default function Home() {
             formData.append('resume', data.resume[0]);
             formData.append('skills', data.skills);
             formData.append('jobDescription', 'Software Engineer');
-            const response = await fetch("/api/form", {
+            const response = await fetch("/api/resumeSubmit", {
                 method: 'POST',
                 body: formData,
             });
