@@ -38,17 +38,17 @@ export async function POST(request: Request) {
 	const validation = formSchema.safeParse(formDataObject);
 
 	if (!validation.success) {
-		return NextResponse.json({ error: validation.error.errors.join(', ') }, { status: 400 });
+		return NextResponse.json({ success: false,error: validation.error.errors.join(', ') }, { status: 400 });
 	}
 
 	if (!resume) {
-		return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
+		return NextResponse.json({ success: false, error: "No file uploaded" }, { status: 400 });
 	}
 
 	console.log("Resume Type:", typeof resume); // Debugging output
 
 	if (!(resume instanceof Blob)) {
-		return NextResponse.json({ error: "Invalid file format" }, { status: 400 });
+		return NextResponse.json({success:false, error: "Invalid file format" }, { status: 400 });
 	}
 	const resumeArrayBuffer = await resume.arrayBuffer();
 	const buffer = Buffer.from(resumeArrayBuffer);
@@ -89,5 +89,5 @@ export async function POST(request: Request) {
 
 // Optional: Handle GET method to prevent 405 errors
 export function GET() {
-	return NextResponse.json({ message: "GET method not allowed" }, { status: 405 });
+	return NextResponse.json({success:false, message: "GET methodddddd not allowed" }, { status: 405 });
 }
