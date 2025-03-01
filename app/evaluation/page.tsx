@@ -2,6 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -55,12 +56,11 @@ export default function Dashboard() {
 			if (!email) {
 				router.push('/form');
 			}
-			const response = await fetch('/api/evaluation', {
-				method: 'POST',
+			const response = await axios.post('/api/evaluation', {
 				body: JSON.stringify({ email }),
 				headers: { 'Content-Type': 'application/json' },
 			});
-			const responseData = await response.json();
+			const responseData = await response.data;
 			setResult(responseData);
 			console.log(responseData);
 			setLoading(false);
