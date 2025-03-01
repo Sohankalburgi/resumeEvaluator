@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { setCookie } from 'cookies-next';
@@ -22,7 +22,7 @@ interface FormData {
 
 export default function Home() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    // const router = useRouter();
+    const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
 
 
@@ -52,7 +52,7 @@ export default function Home() {
                 toast.success('Resume submitted successfully');
                 console.log(responseResult.resumeText);
                 await setCookie('email', responseResult.email);
-                // router.push('/evaluation');
+                router.push('/evaluation');
             } else {
                 toast.error(responseResult.message);
             }
