@@ -50,7 +50,7 @@ export default function Home() {
                 toast.success('Resume submitted successfully');
                 console.log(responseResult.resumeText);
                 setCookie('email', responseResult.email);
-                router.push('/evaluation');
+                // router.push('/evaluation');
             } else {
                 toast.error(responseResult.message);
             }
