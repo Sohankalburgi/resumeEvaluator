@@ -34,7 +34,7 @@ interface Result {
 	companyMatches: string;
 }
 
- function ScoreIndicator({ value, maxValue,className }: { value: number; maxValue: number;className?:string }) {
+function ScoreIndicator({ value, maxValue, className }: { value: number; maxValue: number; className?: string }) {
 	const percentage = Math.round((value / maxValue) * 100);
 	return (
 		<div className="flex flex-col items-center">
@@ -52,13 +52,17 @@ export default function Dashboard() {
 	useEffect(() => {
 		async function fetchResult() {
 			setLoading(true);
-			const email = await getCookie('email');
+			const email = document.cookie
+				.split('; ')
+				.find((row) => row.startsWith('email='))
+				?.split('=')[1];
 			if (!email) {
 				router.push('/form');
 			}
 			const response = await axios.post('/api/evaluation', {
 				body: JSON.stringify({ email }),
 				headers: { 'Content-Type': 'application/json' },
+				withCredentials: true, // Ensure cookies are sent
 			});
 			const responseData = await response.data;
 			setResult(responseData);
@@ -70,38 +74,38 @@ export default function Dashboard() {
 
 	return (
 		<>
-		{loading? <div className="flex justify-center items-center h-screen">Loading...</div>:
-		<div className='flex  flex-col gap-6 w-full max-w-7xl justify-center items-center mx-24 mt-10'>
-			<Card className="w-full  text-center flex ">
-				<CardHeader>
-					<h1 className="text-2xl font-bold capitalize">Hi, {result?.name}</h1>
-					<p className="text-slate-300">Welcome to Resume Evaluator</p>
-				</CardHeader>
-			</Card>
+			{loading ? <div className="flex justify-center items-center h-screen">Loading...</div> :
+				<div className='flex  flex-col gap-6 w-full max-w-7xl justify-center items-center mx-24 mt-10'>
+					<Card className="w-full  text-center flex ">
+						<CardHeader>
+							<h1 className="text-2xl font-bold capitalize">Hi, {result?.name}</h1>
+							<p className="text-slate-300">Welcome to Resume Evaluator</p>
+						</CardHeader>
+					</Card>
 
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full ">
-				<Card className='flex'>
-					<CardHeader>
-						<h2 className="text-xl font-bold">Score</h2>
-					</CardHeader>
-					<CardContent>
-						<ScoreIndicator value={result?.evaluation.score || 0} maxValue={100} />
-					</CardContent>
-				</Card>
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full ">
+						<Card className='flex'>
+							<CardHeader>
+								<h2 className="text-xl font-bold">Score</h2>
+							</CardHeader>
+							<CardContent>
+								<ScoreIndicator value={result?.evaluation.score || 0} maxValue={100} />
+							</CardContent>
+						</Card>
 
-				<Card>
-					<CardHeader>
-						<h2 className="text-xl font-bold">Skills</h2>
-					</CardHeader>
-					<CardContent>
-						<div className='flex gap-2 flex-wrap'>{result?.skills.split(',').map((val, index) => {
-							return (<Badge key={index}>{val}</Badge>)
-						})}</div>
-					</CardContent>
-				</Card>
-			</div>
+						<Card>
+							<CardHeader>
+								<h2 className="text-xl font-bold">Skills</h2>
+							</CardHeader>
+							<CardContent>
+								<div className='flex gap-2 flex-wrap'>{result?.skills.split(',').map((val, index) => {
+									return (<Badge key={index}>{val}</Badge>)
+								})}</div>
+							</CardContent>
+						</Card>
+					</div>
 
-			{/* <Card className="w-full ">
+					{/* <Card className="w-full ">
 				<CardHeader>
 					<h2 className="text-xl font-bold">Experience</h2>
 				</CardHeader>
@@ -117,37 +121,37 @@ export default function Dashboard() {
 				</CardContent>
 			</Card> */}
 
-			<div className="flex  w-full ">
-				<Card>
-					<CardHeader>
-						<h2 className="text-xl font-bold">Summary</h2>
-					</CardHeader>
-					<CardContent>
-						<p className='mt-2 text-justify text-wrap w-full'>{result?.summary}</p>
-					</CardContent>
-				</Card>
-			</div>
-			<div className=''>
-				<Card>
-					<CardHeader>
-						<h2 className="text-xl font-bold">Feedback</h2>
-					</CardHeader>
-					<CardContent>
-						<p className='mt-2 text-justify text-wrap w-full'>{result?.evaluation.feedback}</p>
-					</CardContent>
-				</Card>
-			</div>
-			<Card className="w-full ">
-				<CardHeader>
-					<h2 className="text-xl font-bold">Contact</h2>
-				</CardHeader>
-				<CardContent>
-					<p>Name: {result?.name}</p>
-					<p>Email: {result?.email}</p>
-					<p>LinkedIn: <a href={result?.linkedIn} className="text-primary underline" target="_blank">{result?.linkedIn}</a></p>
-				</CardContent>
-			</Card>
-		</div>}
+					<div className="flex  w-full ">
+						<Card>
+							<CardHeader>
+								<h2 className="text-xl font-bold">Summary</h2>
+							</CardHeader>
+							<CardContent>
+								<p className='mt-2 text-justify text-wrap w-full'>{result?.summary}</p>
+							</CardContent>
+						</Card>
+					</div>
+					<div className=''>
+						<Card>
+							<CardHeader>
+								<h2 className="text-xl font-bold">Feedback</h2>
+							</CardHeader>
+							<CardContent>
+								<p className='mt-2 text-justify text-wrap w-full'>{result?.evaluation.feedback}</p>
+							</CardContent>
+						</Card>
+					</div>
+					<Card className="w-full ">
+						<CardHeader>
+							<h2 className="text-xl font-bold">Contact</h2>
+						</CardHeader>
+						<CardContent>
+							<p>Name: {result?.name}</p>
+							<p>Email: {result?.email}</p>
+							<p>LinkedIn: <a href={result?.linkedIn} className="text-primary underline" target="_blank">{result?.linkedIn}</a></p>
+						</CardContent>
+					</Card>
+				</div>}
 		</>
 	);
 }
