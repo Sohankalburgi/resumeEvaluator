@@ -87,4 +87,7 @@ export async function POST(request: Request) {
 	});
 }
 
-
+// Optional: Handle GET method to prevent 405 errors
+export function GET() {
+	return NextResponse.json({ message: "GET method not allowed" }, { status: 405 });
+}
