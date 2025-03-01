@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 	
 	const feedback = await evaluateFeedBack(submittedForm.jobDescription, submittedForm.resumeText);
 	
-	const evaluation = {score: (score), feedback };
+	const evaluation = {score: score, feedback };
 	
 	await addScoreMetaData(email, evaluation.score);
 
