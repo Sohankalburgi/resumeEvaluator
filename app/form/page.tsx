@@ -21,7 +21,7 @@ interface FormData {
 
 export default function Home() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
-    const router = useRouter();
+    // const router = useRouter();
     const [loading, setLoading] = useState<boolean>(false);
 
 
