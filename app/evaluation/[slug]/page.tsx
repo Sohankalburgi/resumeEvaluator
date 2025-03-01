@@ -58,12 +58,14 @@ export default function Dashboard( ) {
 			if (!email) {
 				router.push('/form');
 			}
-			const response = await axios.post('/api/evaluation', {
+			console.log("dfkk",email)
+			const response = await fetch('/api/evaluation', {
+				method:"POST",
 				body: JSON.stringify({ email }),
 				headers: { 'Content-Type': 'application/json' },
-				withCredentials: true, // Ensure cookies are sent
+				
 			});
-			const responseData = await response.data;
+			const responseData = await response.json();
 			setResult(responseData);
 			console.log(responseData);
 			setLoading(false);
