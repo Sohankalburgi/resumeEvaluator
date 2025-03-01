@@ -6,7 +6,7 @@ import prisma from '@/lib/prisma';
 export async function POST(req: Request) {
 	const { email } = await req.json();
 
-	const submittedForm = await prisma.user.findUnique({
+	const submittedForm = await prisma.user.findFirst({
 		where: {
 			email
 		},
