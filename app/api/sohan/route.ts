@@ -2,7 +2,7 @@ import { generateEmbedding } from "@/lib/embedding";
 import { extractExperience, extractSkills } from "@/lib/extractor";
 import { storeEmbedding } from "@/lib/pinecone";
 import prisma from "@/lib/prisma";
-import fs from "fs";
+
 import { NextResponse } from "next/server";
 import pdfParse from "pdf-parse";
 import { z } from "zod";
