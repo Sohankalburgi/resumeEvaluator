@@ -3,8 +3,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import axios from 'axios';
-import { getCookie } from 'cookies-next';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type Evaluation = {
@@ -45,17 +44,17 @@ function ScoreIndicator({ value, maxValue, className }: { value: number; maxValu
 	);
 }
 
-export default function Dashboard() {
+export default function Dashboard( ) {
 	const [result, setResult] = useState<Result | null>(null);
 	const router = useRouter();
+	const params = useParams();
+	const email = params.slug;
+	console.log(email);
 	const [loading, setLoading] = useState<boolean>(false);
 	useEffect(() => {
 		async function fetchResult() {
 			setLoading(true);
-			const email = document.cookie
-				.split('; ')
-				.find((row) => row.startsWith('email='))
-				?.split('=')[1];
+			
 			if (!email) {
 				router.push('/form');
 			}
