@@ -5,7 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import {  setCookie } from 'cookies-next';
+import { setCookie } from 'cookies-next';
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface FormData {
     name: string;
     email: string;
@@ -15,11 +19,14 @@ interface FormData {
     jobDescription: string;
 }
 
-
 export default function Home() {
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const router = useRouter();
+    const [loading, setLoading] = useState<boolean>(false);
+
+
     const onSubmit = async (data: FormData) => {
+        setLoading(true);
         console.log(data);
         try {
             // Handle form submission
@@ -39,15 +46,20 @@ export default function Home() {
             console.log(responseResult);
 
             if(responseResult.success) {
-                alert('Resume submitted successfully');
+                toast.success('Resume submitted successfully');
                 console.log(responseResult.resumeText);
                 setCookie('email', responseResult.email);
                 router.push('/evaluation');
+            } else {
+                toast.error(responseResult.message);
             }
-
         }
         catch (err) {
             console.log(err);
+            toast.error('Failed to submit resume');
+        }
+        finally {
+            setLoading(false);
         }
     };
 
@@ -78,7 +90,7 @@ export default function Home() {
                     <Input type="text" {...register('jobDescription')} />
                     {errors.jobDescription && <span className='text-red-500'> Job Description is required</span>}
                     <Button className='mt-3'>
-                        Submit
+                        {loading ? 'Submitting...' : 'Submit'}
                     </Button>
                 </form>
             </Card>

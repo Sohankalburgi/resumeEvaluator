@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { generateSummary, evaluateCandidate, generateCompanyMatches } from '@/lib/gemini';
+import { generateSummary, evaluateCandidate, generateCompanyMatches, evaluateFeedBack } from '@/lib/gemini';
 import { addScoreMetaData } from '@/lib/pinecone';
 import prisma from '@/lib/prisma';
 
@@ -23,7 +23,12 @@ export async function POST(req: Request) {
 	const companyMatches = await generateCompanyMatches(submittedForm.resumeText);
 
 	// Evaluate against job description
-	const evaluation = await evaluateCandidate(submittedForm.jobDescription, submittedForm.resumeText);
+	const score = await evaluateCandidate(submittedForm.jobDescription, submittedForm.resumeText);
+	
+	const feedback = await evaluateFeedBack(submittedForm.jobDescription, submittedForm.resumeText);
+	
+	const evaluation = {score: (score), feedback };
+	
 	await addScoreMetaData(email, evaluation.score);
 
 	return NextResponse.json({ summary, evaluation, companyMatches, ...submittedForm });

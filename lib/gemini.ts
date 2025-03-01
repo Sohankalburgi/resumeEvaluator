@@ -23,11 +23,18 @@ export async function evaluateCandidate(jobDesc: string, resumeText: string) {
   const prompt = `Evaluate how well this resume matches the job description. 
     Job Description: ${jobDesc}
     Resume: ${resumeText}
-    Provide a score out of 100 and feedback. Respond in JSON format: 
-    { score: number; feedback: string; }`;
+    Provide a score out of 100 and format of number only as the result`;
   
   const result = await model.generateContent(prompt);
-  console.log("*****************************")
-  console.log(result.response.text().substring(7).trim().replaceAll("```",''));
-  return JSON.parse(result.response.text().substring(7).trim().replaceAll("```",''));
+  return result.response.text();
+}
+
+export async function evaluateFeedBack(jobDesc: string, resumeText: string) {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const prompt = `Provide feedback on how the candidate can improve their resume to better match the job description.
+    Job Description: ${jobDesc}
+    Resume: ${resumeText}`;
+  
+  const result = await model.generateContent(prompt);
+  return result.response.text();
 }

@@ -62,6 +62,7 @@ export default function Dashboard() {
 			});
 			const responseData = await response.json();
 			setResult(responseData);
+			console.log(responseData);
 			setLoading(false);
 		}
 		fetchResult();

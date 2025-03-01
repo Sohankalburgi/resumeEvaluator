@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 
 import { NextResponse } from "next/server";
 import pdfParse from "pdf-parse";
+import { z } from "zod";
 
 export async function POST(request: Request) {
 	const formData = await request.formData();
@@ -15,6 +16,30 @@ export async function POST(request: Request) {
 	const skills = formData.get('skills') as string;
 	const jobDescription = formData.get('jobDescription') as string;
 	console.log(name, email, linkedIn, resume, skills);
+	const formSchema = z.object({
+		name: z.string().nonempty("Name is required"),
+		email: z.string().email("Invalid email format"),
+		linkedin: z.string().url("Invalid LinkedIn URL"),
+		resume: z.custom<File>((value) => value instanceof File, { message: "Resume must be a file" }),
+		skills: z.string().nonempty("Skills are required"),
+		jobDescription: z.string().nonempty("Job description is required"),
+	});
+
+	const formDataObject = {
+		name,
+		email,
+		linkedin: linkedIn,
+		resume,
+		skills,
+		jobDescription,
+	};
+
+	const validation = formSchema.safeParse(formDataObject);
+
+	if (!validation.success) {
+		return NextResponse.json({ error: validation.error.errors.join(', ') }, { status: 400 });
+	}
+
 	if (!resume) {
 		return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
 	}
