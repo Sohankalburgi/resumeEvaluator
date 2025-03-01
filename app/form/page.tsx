@@ -45,7 +45,7 @@ export default function Home() {
 
             )
 
-            const responseResult = await response.json();
+            const responseResult = await response.data;
             console.log(responseResult);
 
             if(responseResult.success) {
